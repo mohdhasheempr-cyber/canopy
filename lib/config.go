@@ -60,15 +60,15 @@ func DefaultConfig() Config {
 // MAIN CONFIG BELOW
 
 type MainConfig struct {
-	LogLevel         string             `json:"logLevel"`         // any level includes the levels above it: debug < info < warning < error
-	ChainId          uint64             `json:"chainId"`          // the identifier of this particular chain within a single 'network id'
-	SleepUntil       uint64             `json:"sleepUntil"`       // allows coordinated 'wake-ups' for genesis or chain halt events
-	RootChain        []RootChain        `json:"rootChain"`        // a list of the root chain(s) a node could connect to as dictated by the governance parameter 'RootChainId'
-	RunVDF           bool               `json:"runVDF"`           // whether the node should run a Verifiable Delay Function to help secure the network against Long-Range-Attacks
-	Headless         bool               `json:"headless"`         // turn off the web wallet and block explorer 'web' front ends
-	AutoUpdate       bool               `json:"autoUpdate"`       // check for new versions of software each X time
-	Plugin           string             `json:"plugin"`           // the configured plugin to use
-	PluginTimeoutMS  int                `json:"pluginTimeoutMS"`  // plugin request timeout in milliseconds
+	LogLevel         string                 `json:"logLevel"`         // any level includes the levels above it: debug < info < warning < error
+	ChainId          uint64                 `json:"chainId"`          // the identifier of this particular chain within a single 'network id'
+	SleepUntil       uint64                 `json:"sleepUntil"`       // allows coordinated 'wake-ups' for genesis or chain halt events
+	RootChain        []RootChain            `json:"rootChain"`        // a list of the root chain(s) a node could connect to as dictated by the governance parameter 'RootChainId'
+	RunVDF           bool                   `json:"runVDF"`           // whether the node should run a Verifiable Delay Function to help secure the network against Long-Range-Attacks
+	Headless         bool                   `json:"headless"`         // turn off the web wallet and block explorer 'web' front ends
+	AutoUpdate       bool                   `json:"autoUpdate"`       // check for new versions of software each X time
+	Plugin           string                 `json:"plugin"`           // the configured plugin to use
+	PluginTimeoutMS  int                    `json:"pluginTimeoutMS"`  // plugin request timeout in milliseconds
 	PluginAutoUpdate PluginAutoUpdateConfig `json:"pluginAutoUpdate"` // plugin auto-update configuration
 }
 
@@ -116,20 +116,37 @@ func (m *MainConfig) GetLogLevel() int32 {
 // RPC CONFIG BELOW
 
 type RPCConfig struct {
-	WalletPort                 string `json:"walletPort"`                 // the port where the web wallet is hosted
-	ExplorerPort               string `json:"explorerPort"`               // the port where the block explorer is hosted
-	RPCPort                    string `json:"rpcPort"`                    // the port where the rpc server is hosted
-	AdminPort                  string `json:"adminPort"`                  // the port where the admin rpc server is hosted
-	RPCUrl                     string `json:"rpcURL"`                     // the url where the rpc server is hosted
-	AdminRPCUrl                string `json:"adminRPCUrl"`                // the url where the admin rpc server is hosted
-	TimeoutS                   int    `json:"timeoutS"`                   // the rpc request timeout in seconds
-	IndexerBlobCacheEntries    int    `json:"indexerBlobCacheEntries"`    // number of cached indexer blobs to keep in memory
-	MaxRCSubscribers           int    `json:"maxRCSubscribers"`           // max total root-chain subscribers
-	MaxRCSubscribersPerChain   int    `json:"maxRCSubscribersPerChain"`   // max root-chain subscribers per chain id
-	RCSubscriberReadLimitBytes int64  `json:"rcSubscriberReadLimitBytes"` // max bytes allowed in a single ws message from a subscriber
-	RCSubscriberWriteTimeoutMS int    `json:"rcSubscriberWriteTimeoutMS"` // ws write timeout for publishing root-chain info
-	RCSubscriberPongWaitS      int    `json:"rcSubscriberPongWaitS"`      // time to wait for pong responses
-	RCSubscriberPingPeriodS    int    `json:"rcSubscriberPingPeriodS"`    // how often to ping subscribers
+	WalletPort                 string                  `json:"walletPort"`                 // the port where the web wallet is hosted
+	ExplorerPort               string                  `json:"explorerPort"`               // the port where the block explorer is hosted
+	RPCPort                    string                  `json:"rpcPort"`                    // the port where the rpc server is hosted
+	AdminPort                  string                  `json:"adminPort"`                  // the port where the admin rpc server is hosted
+	RPCUrl                     string                  `json:"rpcURL"`                     // the url where the rpc server is hosted
+	AdminRPCUrl                string                  `json:"adminRPCUrl"`                // the url where the admin rpc server is hosted
+	TimeoutS                   int                     `json:"timeoutS"`                   // the rpc request timeout in seconds
+	IndexerBlobCacheEntries    int                     `json:"indexerBlobCacheEntries"`    // number of cached indexer blobs to keep in memory
+	MaxRCSubscribers           int                     `json:"maxRCSubscribers"`           // max total root-chain subscribers
+	MaxRCSubscribersPerChain   int                     `json:"maxRCSubscribersPerChain"`   // max root-chain subscribers per chain id
+	RCSubscriberReadLimitBytes int64                   `json:"rcSubscriberReadLimitBytes"` // max bytes allowed in a single ws message from a subscriber
+	RCSubscriberWriteTimeoutMS int                     `json:"rcSubscriberWriteTimeoutMS"` // ws write timeout for publishing root-chain info
+	RCSubscriberPongWaitS      int                     `json:"rcSubscriberPongWaitS"`      // time to wait for pong responses
+	RCSubscriberPingPeriodS    int                     `json:"rcSubscriberPingPeriodS"`    // how often to ping subscribers
+	GoogleClientId             string                  `json:"googleClientId"`             // the Google OAuth 2.0 client id enabling 'Sign in with Google' in the web wallet (empty disables it)
+	GoogleClientSecret         string                  `json:"googleClientSecret"`         // the Google OAuth 2.0 client secret paired with the client id
+	GoogleRedirectURL          string                  `json:"googleRedirectUrl"`          // optional override of the Google OAuth redirect url (default is the admin rpc url + /v1/auth/google/callback)
+	GoogleEndpointsOverride    GoogleEndpointsOverride `json:"googleEndpointsOverride"`    // optional override of the Google OAuth endpoints (testing / self-hosted providers only)
+}
+
+// GoogleEndpointsOverride replaces the hard coded Google OAuth endpoints.
+// When left empty the official Google endpoints are used.
+type GoogleEndpointsOverride struct {
+	AuthURL  string `json:"authUrl"`  // the authorization consent page url
+	TokenURL string `json:"tokenUrl"` // the token exchange endpoint url
+	JWKSURL  string `json:"jwksUrl"`  // the JSON Web Key Set endpoint used to verify id token signatures
+}
+
+// GoogleOAuthConfigured() returns true if the Google OAuth credentials are set
+func (c *RPCConfig) GoogleOAuthConfigured() bool {
+	return c.GoogleClientId != "" && c.GoogleClientSecret != ""
 }
 
 // RootChain defines a rpc url to a possible 'root chain' which is used if the governance parameter RootChainId == ChainId

@@ -1,6 +1,8 @@
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
-import { Nav, NavDropdown } from "react-bootstrap";
+import { Nav, NavDropdown, Button } from "react-bootstrap";
+import { Google as GoogleIcon } from "react-bootstrap-icons";
+import Link from "next/link";
 import { withTooltip } from "@/components/util";
 import DarkModeToggle from "@/components/color_mode";
 import { WalletLogoIcon, KeyIcon } from "@/components/svg_icons";
@@ -53,7 +55,7 @@ const navbarIconsAndTip = [
   },
 ];
 
-export default function Navigation({ keystore, setActiveKey, keyIdx, setNavIdx, height }) {
+export default function Navigation({ keystore, setActiveKey, keyIdx, setNavIdx, height, googleUser, onGoogleSignOut }) {
   return (
     <Navbar sticky="top" data-bs-theme="light" id="nav-bar">
       <Container id="nav-bar-container">
@@ -87,6 +89,28 @@ export default function Navigation({ keystore, setActiveKey, keyIdx, setNavIdx, 
           </Nav>
         </div>
         <DarkModeToggle />
+        {googleUser ? (
+          <Navbar.Text className="navbar ms-4" id="google-user">
+            {googleUser.picture && (
+              <img src={googleUser.picture} alt="profile" width="24" height="24" className="rounded-circle me-2" />
+            )}
+            <strong className="nav-bar-brand-highlight">{googleUser.email || googleUser.name}</strong>
+            <Button
+              id="google-sign-out"
+              variant="outline-secondary"
+              size="sm"
+              className="ms-2"
+              onClick={onGoogleSignOut}
+            >
+              Sign out
+            </Button>
+          </Navbar.Text>
+        ) : (
+          <Nav.Link id="google-sign-in" as={Link} href="/login" className="navbar ms-4 d-flex align-items-center gap-1">
+            <GoogleIcon size={18} />
+            Sign in with Google
+          </Nav.Link>
+        )}
         <Navbar.Text className="navbar ms-4">
           Latest height :{" "}
           <strong style={{ paddingLeft: "4px" }} className="nav-bar-brand-highlight">

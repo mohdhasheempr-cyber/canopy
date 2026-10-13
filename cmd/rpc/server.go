@@ -60,6 +60,12 @@ type Server struct {
 	// handles the indexer blob caching
 	indexerBlobCache *indexerBlobCache
 
+	// holds authenticated 'Sign in with Google' users keyed by their session token
+	googleSessions *googleSessionStore
+
+	// holds single-use anti-forgery state values for pending Google logins
+	googleStates *googleLoginStates
+
 	logger lib.LoggerI
 }
 
@@ -73,6 +79,8 @@ func NewServer(controller *controller.Controller, config lib.Config, logger lib.
 		poll:             make(fsm.Poll),
 		pollMux:          &sync.RWMutex{},
 		indexerBlobCache: newIndexerBlobCache(100),
+		googleSessions:   newGoogleSessionStore(),
+		googleStates:     newGoogleLoginStates(),
 	}
 }
 
