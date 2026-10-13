@@ -70,6 +70,10 @@ const (
 	DebugGoroutineRoutePath = "/debug/goroutine"
 	// eth
 	EthereumRoutePath = "/v1/eth"
+	// auth
+	GoogleLoginRoutePath    = "/v1/auth/google/login"
+	GoogleCallbackRoutePath = "/v1/auth/google/callback"
+	GoogleSessionRoutePath  = "/v1/auth/google/session"
 	// admin
 	KeystoreRoutePath          = "/v1/admin/keystore"
 	KeystoreNewKeyRoutePath    = "/v1/admin/keystore-new-key"
@@ -168,6 +172,10 @@ const (
 	DebugGoroutineRouteName = "goroutine"
 	// eth
 	EthereumRouteName = "eth"
+	// auth
+	GoogleLoginRouteName    = "google-login"
+	GoogleCallbackRouteName = "google-callback"
+	GoogleSessionRouteName  = "google-session"
 	// admin
 	KeystoreRouteName               = "keystore"
 	KeystoreNewKeyRouteName         = "keystore-new-key"
@@ -274,6 +282,10 @@ var routePaths = routes{
 	DebugGoroutineRouteName: {Method: http.MethodGet, Path: DebugGoroutineRoutePath},
 	// eth
 	EthereumRouteName: {Method: http.MethodPost, Path: EthereumRoutePath},
+	// auth
+	GoogleLoginRouteName:    {Method: http.MethodGet, Path: GoogleLoginRoutePath},
+	GoogleCallbackRouteName: {Method: http.MethodGet, Path: GoogleCallbackRoutePath},
+	GoogleSessionRouteName:  {Method: http.MethodGet, Path: GoogleSessionRoutePath},
 	// admin
 	KeystoreRouteName:               {Method: http.MethodGet, Path: KeystoreRoutePath},
 	KeystoreNewKeyRouteName:         {Method: http.MethodPost, Path: KeystoreNewKeyRoutePath},
@@ -425,6 +437,10 @@ func createAdminRouter(s *Server) *httprouter.Router {
 		LogsRouteName:                   logsHandler(s),
 		AddVoteRouteName:                s.AddVote,
 		DelVoteRouteName:                s.DelVote,
+		// auth
+		GoogleLoginRouteName:    s.GoogleLogin,
+		GoogleCallbackRouteName: s.GoogleCallback,
+		GoogleSessionRouteName:  s.GoogleSession,
 		// debug
 		DebugBlockedRouteName:   debugHandler(DebugBlockedRouteName),
 		DebugHeapRouteName:      debugHandler(DebugHeapRouteName),

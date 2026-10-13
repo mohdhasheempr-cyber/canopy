@@ -717,3 +717,43 @@ export async function ConsensusInfo() {
 export async function PeerInfo() {
   return GET(adminRPCURL, peerInfoPath);
 }
+
+const googleLoginPath = "/v1/auth/google/login";
+const googleSessionPath = "/v1/auth/google/session";
+const googleSessionTokenKey = "googleSessionToken";
+
+export function googleLoginURL() {
+  return adminRPCURL + googleLoginPath;
+}
+
+export async function GoogleSession(token) {
+  return GET(adminRPCURL, googleSessionPath + "?token=" + encodeURIComponent(token));
+}
+
+export function getGoogleSessionToken() {
+  if (typeof window === "undefined") {
+    return null;
+  }
+  return window.localStorage.getItem(googleSessionTokenKey);
+}
+
+export function setGoogleSessionToken(token) {
+  window.localStorage.setItem(googleSessionTokenKey, token);
+}
+
+export function clearGoogleSessionToken() {
+  window.localStorage.removeItem(googleSessionTokenKey);
+}
+
+export async function resolveGoogleUser() {
+  const token = getGoogleSessionToken();
+  if (!token) {
+    return null;
+  }
+  try {
+    return await GoogleSession(token);
+  } catch {
+    clearGoogleSessionToken();
+    return null;
+  }
+}
