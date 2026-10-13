@@ -7,41 +7,146 @@ body,
   font-family: "DM Sans", sans-serif;
 }
 
+/* Theme variables (dark is the default) */
+:root {
+  --c-background: #1a1b23;
+  --c-card: #22232e;
+  --c-navbar: #14151c;
+  --c-input: #2b2c38;
+  --c-primary: #4ade80;
+  --c-primary-text: #4ade80;
+  --c-red: #ef4444;
+  --c-back: #9ca3af;
+  --c-select-chevron: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+}
+
+html.light {
+  --c-background: #f4f5f9;
+  --c-card: #ffffff;
+  --c-navbar: #ffffff;
+  --c-input: #eef0f4;
+  --c-primary: #16a34a;
+  --c-primary-text: #15803d;
+  --c-red: #ef4444;
+  --c-back: #6b7280;
+  --c-select-chevron: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%231a1b23' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+}
+
 /* Explicit custom colors */
 .bg-background {
-  background-color: #1a1b23 !important;
+  background-color: var(--c-background) !important;
 }
 
 .bg-card {
-  background-color: #22232e !important;
+  background-color: var(--c-card) !important;
 }
 
 .text-primary {
-  color: #4ade80 !important;
+  color: var(--c-primary-text) !important;
 }
 
 .bg-primary {
-  background-color: #4ade80 !important;
+  background-color: var(--c-primary) !important;
 }
 
 .text-red {
-  color: #ef4444 !important;
+  color: var(--c-red) !important;
 }
 
 .bg-red {
-  background-color: #ef4444 !important;
+  background-color: var(--c-red) !important;
 }
 
 .bg-back {
-  background-color: #9ca3af !important;
+  background-color: var(--c-back) !important;
 }
 
 .bg-navbar {
-  background-color: #14151c !important;
+  background-color: var(--c-navbar) !important;
 }
 
 .bg-input {
-  background-color: #2b2c38 !important;
+  background-color: var(--c-input) !important;
+}
+
+/* Light theme overrides for utilities hardcoded across the app */
+html.light .text-white {
+  color: #1a1b23 !important;
+}
+
+html.light .text-gray-100 {
+  color: #111827 !important;
+}
+
+html.light .text-gray-200 {
+  color: #1f2937 !important;
+}
+
+html.light .text-gray-300 {
+  color: #374151 !important;
+}
+
+html.light .text-gray-400 {
+  color: #4b5563 !important;
+}
+
+html.light .text-gray-500 {
+  color: #6b7280 !important;
+}
+
+html.light .text-gray-600 {
+  color: #6b7280 !important;
+}
+
+html.light .border-gray-800 {
+  border-color: #e5e7eb !important;
+}
+
+html.light .border-gray-700 {
+  border-color: #d1d5db !important;
+}
+
+html.light .border-gray-600 {
+  border-color: #d1d5db !important;
+}
+
+html.light .border-gray-400 {
+  border-color: #cbd5e1 !important;
+}
+
+html.light .divide-gray-400 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #e5e7eb !important;
+}
+
+html.light .bg-gray-500,
+html.light .hover\:bg-gray-500:hover {
+  background-color: #d1d5db !important;
+}
+
+html.light .bg-gray-600,
+html.light .hover\:bg-gray-600:hover {
+  background-color: #e5e7eb !important;
+}
+
+html.light .bg-gray-700,
+html.light .hover\:bg-gray-700:hover {
+  background-color: #e5e7eb !important;
+}
+
+html.light .bg-gray-800,
+html.light .hover\:bg-gray-800:hover {
+  background-color: #f3f4f6 !important;
+}
+
+html.light .placeholder-gray-500::placeholder {
+  color: #9ca3af !important;
+}
+
+html.light .react-datepicker__day--keyboard-selected,
+html.light .react-datepicker__day--selected,
+html.light .react-datepicker__day--in-selecting-range,
+html.light .react-datepicker__day--in-range {
+  color: #ffffff !important;
 }
 
 /* DatePicker styles */
@@ -86,6 +191,33 @@ body,
   /* White arrows */
 }
 
+html.light .react-datepicker {
+  border-color: #d1d5db;
+  background-color: #ffffff;
+}
+
+html.light .react-datepicker__header {
+  background-color: #ffffff;
+}
+
+html.light .react-datepicker__current-month,
+html.light .react-datepicker__day-name,
+html.light .react-datepicker__time-name,
+html.light .react-datepicker__day {
+  color: #1a1b23 !important;
+}
+
+html.light .react-datepicker__navigation--previous,
+html.light .react-datepicker__navigation--next,
+html.light .react-datepicker__navigation-icon::before {
+  border-color: #1a1b23 !important;
+  /* Dark arrows */
+}
+
+html.light .react-datepicker__day--weekend {
+  color: #6b7280 !important;
+}
+
 .react-datepicker__day--weekend {
   color: #6b7280 !important;
   /* Gray 500 */
@@ -108,11 +240,26 @@ body,
   /* Rounded */
 }
 
+html.light .react-datepicker__day--keyboard-selected,
+html.light .react-datepicker__day--selected,
+html.light .react-datepicker__day--in-selecting-range,
+html.light .react-datepicker__day--in-range {
+  background-color: #16a34a !important;
+  /* Primary background */
+  color: #ffffff !important;
+  /* White text for contrast */
+}
+
 .react-datepicker__day:hover {
   background-color: #374151;
   /* Gray 700 or a suitable hover color */
   border-radius: 0.25rem;
   /* Rounded */
+}
+
+html.light .react-datepicker__day:hover {
+  background-color: #e5e7eb;
+  /* Gray 200 */
 }
 
 .react-datepicker__day--outside-month {
@@ -137,7 +284,7 @@ button {
 /* General select styles - right padding for chevron */
 select {
   padding-right: 2.5rem !important;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-image: var(--c-select-chevron);
   background-position: right 0.75rem center;
   background-repeat: no-repeat;
   background-size: 1.5em 1.5em;
