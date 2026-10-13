@@ -5,6 +5,7 @@ import menuConfig from '../data/navbar.json'
 import Logo from './Logo'
 import { useAllBlocksCache } from '../hooks/useApi'
 import NetworkSelector from './NetworkSelector'
+import ThemeToggle from './ThemeToggle'
 
 const Navbar = () => {
     const location = useLocation()
@@ -203,10 +204,14 @@ const Navbar = () => {
                         {import.meta.env.VITE_NODE_ENV === 'production' && (
                             <NetworkSelector />
                         )}
+
+                        {/* Theme Toggle */}
+                        <ThemeToggle />
                     </div>
 
                     {/* Mobile menu button */}
-                    <div className="md:hidden flex items-center justify-end col-start-3">
+                    <div className="md:hidden flex items-center justify-end col-start-3 space-x-1">
+                        <ThemeToggle />
                         <button
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             className="text-gray-300 hover:text-primary focus:outline-none focus:text-primary"
